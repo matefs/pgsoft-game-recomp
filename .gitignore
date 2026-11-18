@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+*.log
+.user.ini
+.DS_Store
+/src/server.key
+/src/server.crt
+
+node_modules/
+.tools/
+.local/
+
+# Keep the bundled browser assets. Rebuild the TypeScript output locally.
+/dist/*
+!/dist/public/

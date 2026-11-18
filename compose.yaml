@@ -1,0 +1,22 @@
+name: pgsoft-local
+services:
+  mysql:
+    image: mysql:8.0.36
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "127.0.0.1:${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_PASSWORD mysql -h 127.0.0.1 -u $$MYSQL_USER $$MYSQL_DATABASE -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 3s
+      timeout: 5s
+      retries: 40
+      start_period: 15s
+volumes:
+  mysql_data:
